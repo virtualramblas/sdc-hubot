@@ -19,8 +19,6 @@
 #   Guglielmo Iozzia (@virtualramblas)
 
 sdcInstance = ""
-user = ""
-pass = ""
 
 module.exports = (robot) ->
 	#----------------------------------------
@@ -29,7 +27,7 @@ module.exports = (robot) ->
 	robot.hear /sdc check (.*)/i, (res) ->
 		sdcInstance = res.match[1] 
 		sdcUrl = sdcInstance + "/rest/v1/system/info"
-		auth = "Basic " + new Buffer(user + ':' + pass).toString('base64')
+		auth = "Basic " + new Buffer(process.env.SDC_USER + ':' + process.env.SDC_PASSWORD).toString('base64')
 		res.robot.http(sdcUrl)
 			.header('Authorization', auth, 'Accept', 'application/json')
 			.get() (err, resp, body) ->
@@ -47,7 +45,7 @@ module.exports = (robot) ->
 	robot.hear /sdc pipeline (.*) status/i, (res) ->
 		pipelineName = res.match[1] 
 		sdcUrl = sdcInstance + "/rest/v1/pipelines?filterText=" + pipelineName + "&includeStatus=true"
-		auth = "Basic " + new Buffer(user + ':' + pass).toString('base64')
+		auth = "Basic " + new Buffer(process.env.SDC_USER + ':' + process.env.SDC_PASSWORD).toString('base64')
 		res.robot.http(sdcUrl)
 			.header('Authorization', auth, 'Accept', 'application/json')
 			.get() (err, resp, body) ->
@@ -69,7 +67,7 @@ module.exports = (robot) ->
 	robot.hear /sdc get uuid (.*)/i, (res) ->
 		pipelineName = res.match[1] 
 		getPipelineUuidUrl = sdcInstance + "/rest/v1/pipelines?filterText=" + pipelineName
-		auth = "Basic " + new Buffer(user + ':' + pass).toString('base64')
+		auth = "Basic " + new Buffer(process.env.SDC_USER + ':' + process.env.SDC_PASSWORD).toString('base64')
 		res.robot.http(getPipelineUuidUrl)
 			.header('Authorization', auth, 'Accept', 'application/json')
 			.get() (err, resp, body) ->
@@ -88,7 +86,7 @@ module.exports = (robot) ->
 	robot.hear /sdc pipeline counts (.*)/i, (res) ->
 		pipelineName = res.match[1] 
 		sdcUrl = sdcInstance + "/rest/v1/pipeline/" + pipelineName + "/status"
-		auth = "Basic " + new Buffer(user + ':' + pass).toString('base64')
+		auth = "Basic " + new Buffer(process.env.SDC_USER + ':' + process.env.SDC_PASSWORD).toString('base64')
 		res.robot.http(sdcUrl)
 			.header('Authorization', auth, 'Accept', 'application/json')
 			.get() (err, resp, body) ->
@@ -116,7 +114,7 @@ module.exports = (robot) ->
 	robot.hear /sdc pipeline jvm metrics (.*)/i, (res) ->
 		pipelineName = res.match[1]
 		sdcUrl = sdcInstance + "/rest/v1/pipeline/" + pipelineName + "/status"
-		auth = "Basic " + new Buffer(user + ':' + pass).toString('base64')
+		auth = "Basic " + new Buffer(process.env.SDC_USER + ':' + process.env.SDC_PASSWORD).toString('base64')
 		res.robot.http(sdcUrl)
 			.header('Authorization', auth, 'Accept', 'application/json')
 			.get() (err, resp, body) ->
